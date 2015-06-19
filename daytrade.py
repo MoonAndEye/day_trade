@@ -8,19 +8,32 @@ import os, random, sys
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
+from collections import OrderedDict
 
 history_list = []
 for name in os.listdir('C:/1save/jpStock/raw'):
     history_list.append(name)
 
 #可能要從這邊建立,比較符合python的語法
+#把他寫成 def
 history_number = int(len(history_list)) - 1
 string = {}
 for i in range(0, 9):
   string['d' + str(i)] = history_list[history_number]
   history_number = history_number - 1
-  
-print (string)
+
+"""
+#下面這一行,是用來排序array 平常不需要用
+b = OrderedDict(sorted(string.items()))
+
+print (b) 
+print (string[key])
+"""
+
+
+def sortDataFromNew (source_list):
+    history_number = int(len(source_list)) - 1
+
 
 #d0 = history_number -1 #要射的飛標只要這個
 #d1 = history_number -2
