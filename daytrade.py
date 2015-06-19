@@ -54,8 +54,8 @@ for i in range(5):
 csv_columns = ['code','market','name','industry','start','high','low','end','volumn','daily_money']
 pre_array = pd.read_csv(file_path + string['d0'], encoding = 'shift-jis')
 #d0_array = pre_array.reindex(columns = csv_columns)
-
-d0_array = pd.DataFrame(pre_array, index = range(4000), columns = csv_columns)
+#
+#d0_array = pd.DataFrame(pre_array, index = range(4000), columns = csv_columns)
 
 print (d0_array.columns)
 print (d0_array.head(5))
