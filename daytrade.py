@@ -10,7 +10,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from collections import OrderedDict
 
-file_path = 'C:/1save/jpStock/raw' #檔案路徑的代號，這邊放歷史資料
+file_path = 'C:/1save/jpStock/raw/' #檔案路徑的代號，這邊放歷史資料
 history_list = []
 for name in os.listdir(file_path):
     history_list.append(name)
@@ -45,13 +45,21 @@ def sortDataFromNew (source_list, index):
 
 #d0 最新日期
 string = sortDataFromNew (history_list, 'd')
-print (string['d0'])
 
-#d0 = history_number -1 #要射的飛標只要這個
-#d1 = history_number -2
-#d2 = history_number -3
-#d3 = history_number -4
-#d4 = history_number -5
+"""
+#測試 d0 到 d4 是不是會撈到歷史資料
+for i in range(5):
+    print (string['d'+ str(i)])
+"""
+csv_columns = ['code','market','name','industry','start','high','low','end','volumn','daily_money']
+pre_array = pd.read_csv(file_path + string['d0'], encoding = 'shift-jis')
+#d0_array = pre_array.reindex(columns = csv_columns)
+
+d0_array = pd.DataFrame(pre_array, index = range(4000), columns = csv_columns)
+
+print (d0_array.columns)
+print (d0_array.head(5))
+#print (d0_array.index)
 
 #date_d0 = history_list[d0]  #這是為了給後面的csv檔有日期
 #date_d1 = history_list[d1]
