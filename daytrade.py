@@ -65,7 +65,7 @@ print (pre_array.columns) #到這裡成功了，接下來是把他拿進新的ar
 pre_array['volumn'] = pre_array['volumn'].astype(int) #先把vol換成int
 pre_array = pre_array[pre_array.volumn != 0] #然後在array裡面去掉vol = 0
 
-print (pre_array.head(100))
+print (pre_array.head(15))
 
 #date_d0 = history_list[d0]  #這是為了給後面的csv檔有日期
 #date_d1 = history_list[d1]
