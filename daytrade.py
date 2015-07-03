@@ -27,7 +27,6 @@ for i in range(0, 9):
 """
 #下面這一行,是用來排序array 平常不需要用
 b = OrderedDict(sorted(string.items()))
-
 print (b) 
 print (string[key])
 """
@@ -57,11 +56,19 @@ pre_array = pd.read_csv(file_path + string['d0'], encoding = 'utf-8')
 #
 #d0_array = pd.DataFrame(pre_array, index = range(4000), columns = csv_columns)
 
-print (pre_array.columns)
-print (pre_array.head(5))
+pre_array.columns = csv_columns #把col 轉成英文
+
+print (pre_array.columns) #到這裡成功了，接下來是把他拿進新的array
+#print (pre_array.head(5)) #我只要code，名，始，高，安，終
 #print (d0_array.index)
+
+pre_array['volumn'] = pre_array['volumn'].astype(int) #先把vol換成int
+pre_array = pre_array[pre_array.volumn != 0] #然後在array裡面去掉vol = 0
+
+print (pre_array.head(100))
 
 #date_d0 = history_list[d0]  #這是為了給後面的csv檔有日期
 #date_d1 = history_list[d1]
 #print (date_d0)
 #print (date_d1)
+
