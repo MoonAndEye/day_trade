@@ -64,8 +64,12 @@ print (pre_array.columns) #到這裡成功了，接下來是把他拿進新的ar
 
 pre_array['volumn'] = pre_array['volumn'].astype(int) #先把vol換成int
 pre_array = pre_array[pre_array.volumn != 0] #然後在array裡面去掉vol = 0
+pre_array.index = pre_array['code'] #把index設定成code之後才好合併
 
-print (pre_array.head(15))
+d0_array = pre_array
+print (d0_array.head(3))
+del pre_array
+print (pre_array)
 
 #date_d0 = history_list[d0]  #這是為了給後面的csv檔有日期
 #date_d1 = history_list[d1]
