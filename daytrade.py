@@ -70,7 +70,7 @@ d0_array = pre_array
 d0_array = d0_array.drop(['industry', 'market', 'volumn', 'daily_money'], axis = 1) #把不需要的資訊砍了，可是不知道為什麼 axis = 0 是不行的
 #d0_array = d0_array.reindex(columns = ['code', 'name','d0_start','d0_high','d0_low','d0_end'])
 d0_array = d0_array.rename(columns = {'start' : 'd0_start', 'high' : 'd0_high', 'low': 'd0_low', 'end' : 'd0_end'})
-print (d0_array.head(3))
+#print (d0_array.head(3))
 del pre_array
 #print (pre_array)
 
@@ -78,3 +78,30 @@ del pre_array
 #date_d1 = history_list[d1]
 #print (date_d0)
 #print (date_d1)
+
+"""
+以下是測試d1_array,在合併前先把兩個做出來
+"""
+
+pre_array = pd.read_csv(file_path + string['d1'], encoding = 'utf-8')
+#d0_array = pre_array.reindex(columns = csv_columns)
+#
+#d0_array = pd.DataFrame(pre_array, index = range(4000), columns = csv_columns)
+
+pre_array.columns = csv_columns #把col 轉成英文
+
+print (pre_array.columns) #到這裡成功了，接下來是把他拿進新的array
+#print (pre_array.head(5)) #我只要code，名，始，高，安，終
+#print (d0_array.index)
+
+pre_array['volumn'] = pre_array['volumn'].astype(int) #先把vol換成int
+pre_array = pre_array[pre_array.volumn != 0] #然後在array裡面去掉vol = 0
+pre_array.index = pre_array['code'] #把index設定成code之後才好合併
+
+d1_array = pre_array
+d1_array = d1_array.drop(['industry', 'market', 'volumn', 'daily_money'], axis = 1) #把不需要的資訊砍了，可是不知道為什麼 axis = 0 是不行的
+#d0_array = d0_array.reindex(columns = ['code', 'name','d0_start','d0_high','d0_low','d0_end'])
+d1_array = d1_array.rename(columns = {'start' : 'd1_start', 'high' : 'd1_high', 'low': 'd1_low', 'end' : 'd1_end'})
+print (d1_array.head(3))
+del pre_array
+
