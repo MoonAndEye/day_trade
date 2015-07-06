@@ -64,12 +64,12 @@ print (pre_array.columns) #到這裡成功了，接下來是把他拿進新的ar
 
 pre_array['volumn'] = pre_array['volumn'].astype(int) #先把vol換成int
 pre_array = pre_array[pre_array.volumn != 0] #然後在array裡面去掉vol = 0
-pre_array.index = pre_array['code'] #把index設定成code之後才好合併
+#pre_array.index = pre_array['code'] #把index設定成code之後才好合併
 
 d0_array = pre_array
-d0_array = d0_array.drop(['industry', 'market', 'volumn', 'daily_money'], axis = 1) #把不需要的資訊砍了，可是不知道為什麼 axis = 0 是不行的
+d0_array = d0_array.drop(['industry', 'volumn', 'daily_money'], axis = 1) #把不需要的資訊砍了，可是不知道為什麼 axis = 0 是不行的
 #d0_array = d0_array.reindex(columns = ['code', 'name','d0_start','d0_high','d0_low','d0_end'])
-d0_array = d0_array.rename(columns = {'start' : 'd0_start', 'high' : 'd0_high', 'low': 'd0_low', 'end' : 'd0_end'})
+#d0_array = d0_array.rename(columns = {'start' : 'd0_start', 'high' : 'd0_high', 'low': 'd0_low', 'end' : 'd0_end'})
 #print (d0_array.head(3))
 del pre_array
 #print (pre_array)
@@ -96,12 +96,14 @@ print (pre_array.columns) #到這裡成功了，接下來是把他拿進新的ar
 
 pre_array['volumn'] = pre_array['volumn'].astype(int) #先把vol換成int
 pre_array = pre_array[pre_array.volumn != 0] #然後在array裡面去掉vol = 0
-pre_array.index = pre_array['code'] #把index設定成code之後才好合併
+#pre_array.index = pre_array['code'] #把index設定成code之後才好合併
 
 d1_array = pre_array
-d1_array = d1_array.drop(['industry', 'market', 'volumn', 'daily_money'], axis = 1) #把不需要的資訊砍了，可是不知道為什麼 axis = 0 是不行的
+d1_array = d1_array.drop(['industry', 'volumn', 'daily_money'], axis = 1) #把不需要的資訊砍了，可是不知道為什麼 axis = 0 是不行的
 #d0_array = d0_array.reindex(columns = ['code', 'name','d0_start','d0_high','d0_low','d0_end'])
-d1_array = d1_array.rename(columns = {'start' : 'd1_start', 'high' : 'd1_high', 'low': 'd1_low', 'end' : 'd1_end'})
-print (d1_array.head(3))
+#d1_array = d1_array.rename(columns = {'start' : 'd1_start', 'high' : 'd1_high', 'low': 'd1_low', 'end' : 'd1_end'})
+#print (d1_array.head(3))
 del pre_array
 
+result = pd.merge (d0_array, d1_array, on = ['code' , 'name', 'market'])
+print (result.head(10))
