@@ -94,8 +94,6 @@ d3_array = makeDailyPriceArray(file_path, 3)
 d4_array = makeDailyPriceArray(file_path, 4)
 
 
-
-
 print (d0_array.head(5))
 #ok, 測試成功, 以後把a 改成 d0_array
 """     
