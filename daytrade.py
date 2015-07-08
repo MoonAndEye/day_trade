@@ -52,9 +52,8 @@ string = sortDataFromNew (history_list, 'd')
 for i in range(5):
     print (string['d'+ str(i)])
 """
-csv_columns = ['code','market','name','industry','start','high','low','end','volumn','daily_money']
 
-def makeDailyPriceArray(file_path, date, array_name):
+def makeDailyPriceArray(file_path, date):
     """    
     程式的一開始 一定要放
     import pandas as pd 
@@ -65,11 +64,34 @@ def makeDailyPriceArray(file_path, date, array_name):
     file_path => 放的是歷史資料
     date      => 只要輸入數字, 0 表示最新的資料; 1 表示 前1天; 2表示前 2天
     """    
+    
     file_path = str(file_path)
     date = str(date)
-    array_name = str(array_name)
-    #pre
-    pre_array =pd.read_csv(file_path + string['d0'], encoding = 'utf-8')
+    #array_name = str(array_name)
+    
+    sort_index = 'd' + str(date)
+    
+    csv_columns = ['code','market','name','industry','start','high','low','end','volumn','daily_money']
+    
+    pre_array =pd.read_csv(file_path + string[sort_index], encoding = 'utf-8')
+    pre_array.columns = csv_columns    
+    pre_array['volumn'] = pre_array['volumn'].astype(int) #先把vol換成int
+    pre_array = pre_array[pre_array.volumn != 0] #然後在array裡面去掉vol = 0
+    #pre_array.index = pre_array['code'] #把index設定成code之後才好合併
+
+    pre_array = pre_array.drop(['industry', 'volumn', 'daily_money'], axis = 1) 
+    
+       
+    array_index = sort_index + '_array'
+    print (array_index)
+    return pre_array
+    #print (array_name)
+
+a = makeDailyPriceArray(file_path, 0) 
+
+print (a.head(5))
+#ok, 測試成功, 以後把a 改成 d0_array
+"""     
 
 pre_array = pd.read_csv(file_path + string['d0'], encoding = 'utf-8')
 #d0_array = pre_array.reindex(columns = csv_columns)
@@ -101,12 +123,13 @@ del pre_array
 #print (date_d0)
 #print (date_d1)
 
-
+"""
 
 """
 以下是測試d1_array,在合併前先把兩個做出來
 """
 
+"""
 pre_array = pd.read_csv(file_path + string['d1'], encoding = 'utf-8')
 #d0_array = pre_array.reindex(columns = csv_columns)
 #
@@ -131,3 +154,5 @@ del pre_array
 
 result = pd.merge (d0_array, d1_array, on = ['code' , 'name', 'market'])
 print (result.head(10))
+
+"""
