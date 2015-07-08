@@ -44,13 +44,33 @@ def sortDataFromNew (source_list, index):
 
 #d0 最新日期
 string = sortDataFromNew (history_list, 'd')
-
+# string['d0'] 表示最新的資料
+# string['d1'] 表示前1天的資料
+# string['d2'] 表示前2天的資料
 """
 #測試 d0 到 d4 是不是會撈到歷史資料
 for i in range(5):
     print (string['d'+ str(i)])
 """
 csv_columns = ['code','market','name','industry','start','high','low','end','volumn','daily_money']
+
+def makeDailyPriceArray(file_path, date, array_name):
+    """    
+    程式的一開始 一定要放
+    import pandas as pd 
+    不然會執行不了
+    
+    而且前面要先用 sortDateFromNew 先處理過歷史資料
+    # !!! You must import pandas as pd first
+    file_path => 放的是歷史資料
+    date      => 只要輸入數字, 0 表示最新的資料; 1 表示 前1天; 2表示前 2天
+    """    
+    file_path = str(file_path)
+    date = str(date)
+    array_name = str(array_name)
+    #pre
+    pre_array =pd.read_csv(file_path + string['d0'], encoding = 'utf-8')
+
 pre_array = pd.read_csv(file_path + string['d0'], encoding = 'utf-8')
 #d0_array = pre_array.reindex(columns = csv_columns)
 #
@@ -67,9 +87,11 @@ pre_array = pre_array[pre_array.volumn != 0] #然後在array裡面去掉vol = 0
 #pre_array.index = pre_array['code'] #把index設定成code之後才好合併
 
 d0_array = pre_array
-d0_array = d0_array.drop(['industry', 'volumn', 'daily_money'], axis = 1) #把不需要的資訊砍了，可是不知道為什麼 axis = 0 是不行的
-#d0_array = d0_array.reindex(columns = ['code', 'name','d0_start','d0_high','d0_low','d0_end'])
-#d0_array = d0_array.rename(columns = {'start' : 'd0_start', 'high' : 'd0_high', 'low': 'd0_low', 'end' : 'd0_end'})
+d0_array = d0_array.drop(['industry', 'volumn', 'daily_money'], axis = 1) 
+#把不需要的資訊砍了，可是不知道為什麼 axis = 0 是不行的
+
+d0_array = d0_array.rename(columns = {'start' : 'd0_start', 'high' : 'd0_high', 'low': 'd0_low', 'end' : 'd0_end'})
+#把始高安終前面加上日期引數 d0 為最靠近的一天
 #print (d0_array.head(3))
 del pre_array
 #print (pre_array)
@@ -78,6 +100,8 @@ del pre_array
 #date_d1 = history_list[d1]
 #print (date_d0)
 #print (date_d1)
+
+
 
 """
 以下是測試d1_array,在合併前先把兩個做出來
