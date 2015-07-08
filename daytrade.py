@@ -80,16 +80,23 @@ def makeDailyPriceArray(file_path, date):
     #pre_array.index = pre_array['code'] #把index設定成code之後才好合併
 
     pre_array = pre_array.drop(['industry', 'volumn', 'daily_money'], axis = 1) 
-    
+    pre_array = pre_array.rename(columns = {'start' : 'd' + str(date) + '_start','high' : 'd' + str(date) +  '_high', 'low': 'd' + str(date) +  '_low', 'end' : 'd' + str(date) +  '_end'})
        
     array_index = sort_index + '_array'
-    print (array_index)
+    #print (array_index)
     return pre_array
     #print (array_name)
 
-a = makeDailyPriceArray(file_path, 0) 
+d0_array = makeDailyPriceArray(file_path, 0) 
+d1_array = makeDailyPriceArray(file_path, 1)
+d2_array = makeDailyPriceArray(file_path, 2)
+d3_array = makeDailyPriceArray(file_path, 3)
+d4_array = makeDailyPriceArray(file_path, 4)
 
-print (a.head(5))
+
+
+
+print (d0_array.head(5))
 #ok, 測試成功, 以後把a 改成 d0_array
 """     
 
