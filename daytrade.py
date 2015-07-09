@@ -105,11 +105,14 @@ merge_array = pd.merge (merge_array, d3_array, on = ['code' , 'name', 'market'])
 merge_array = pd.merge (merge_array, d4_array, on = ['code' , 'name', 'market'])
 
 #cal_array = merge_array['code', 'market', 'name']
-merge_array ['w_highest'] = merge_array[['d0_high','d1_high', 'd2_high', 'd3_high', 'd4_high',]].max(axis = 1)
-merge_array ['w_lowest'] = merge_array[['d0_low','d1_low', 'd2_low', 'd3_low', 'd4_low',]].min(axis = 1)
-
-print (merge_array.head(10))
-
+cal_array = merge_array [['code', 'market', 'name']]
+cal_array ['w_highest'] = merge_array[['d0_high','d1_high', 'd2_high', 'd3_high', 'd4_high',]].max(axis = 1)
+cal_array ['w_lowest'] = merge_array[['d0_low','d1_low', 'd2_low', 'd3_low', 'd4_low',]].min(axis = 1)
+cal_array ['index1'] = (cal_array ['w_highest'] - cal_array ['w_lowest'] ) / (cal_array ['w_highest']+ cal_array ['w_lowest'] )
+cal_array = cal_array.sort(['index1'], ascending=[False])
+pd.set_option('display.precision',20)
+#print (merge_array[:10]) #可以試著寫成這個，從前面數十個
+print (cal_array[:10]) 
 
 #ok, 測試成功, 以後把a 改成 d0_array
 """     
