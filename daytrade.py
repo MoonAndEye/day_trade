@@ -108,63 +108,37 @@ merge_array = pd.merge (merge_array, d4_array, on = ['code' , 'name', 'market'])
 cal_array = merge_array [['code', 'market', 'name']]
 cal_array ['w_highest'] = merge_array[['d0_high','d1_high', 'd2_high', 'd3_high', 'd4_high',]].max(axis = 1)
 cal_array ['w_lowest'] = merge_array[['d0_low','d1_low', 'd2_low', 'd3_low', 'd4_low',]].min(axis = 1)
+
+merge_array ['d0_range'] = merge_array['d0_high'] - merge_array['d0_end']
+merge_array ['d1_range'] = merge_array['d1_high'] - merge_array['d1_end']
+merge_array ['d2_range'] = merge_array['d2_high'] - merge_array['d2_end']
+merge_array ['d3_range'] = merge_array['d3_high'] - merge_array['d3_end']
+merge_array ['d4_range'] = merge_array['d4_high'] - merge_array['d4_end']
+
+merge_array ['d0_indicate'] = merge_array['d0_high'] + merge_array['d0_end']
+merge_array ['d1_indicate'] = merge_array['d1_high'] + merge_array['d1_end']
+merge_array ['d2_indicate'] = merge_array['d2_high'] + merge_array['d2_end']
+merge_array ['d3_indicate'] = merge_array['d3_high'] + merge_array['d3_end']
+merge_array ['d4_indicate'] = merge_array['d4_high'] + merge_array['d4_end']
+
+cal_array ['d_widest'] = merge_array[['d0_range','d1_range', 'd2_range', 'd3_range', 'd4_range',]].max(axis = 1)
+cal_array ['d_indicate'] = merge_array[['d0_indicate','d1_indicate', 'd2_indicate', 'd3_indicate', 'd4_indicate',]].max(axis = 1)
+
 cal_array ['average'] = merge_array[['d0_end','d1_end', 'd2_end', 'd3_end', 'd4_end',]].mean(axis = 1)
-cal_array ['index1'] = (cal_array ['w_highest'] - cal_array ['w_lowest'] ) / cal_array ['average']
-cal_array ['index2'] = (cal_array ['w_highest'] - cal_array ['w_lowest'] ) / (cal_array ['w_highest']+ cal_array ['w_lowest'] )
+
+
+cal_array ['index1'] = cal_array ['d_widest'] / cal_array ['average']
+cal_array ['index2'] = cal_array ['d_widest'] / cal_array ['d_indicate']
+
+
+cal_array ['index3'] = (cal_array ['w_highest'] - cal_array ['w_lowest'] ) / cal_array ['average']
+cal_array ['index4'] = (cal_array ['w_highest'] - cal_array ['w_lowest'] ) / (cal_array ['w_highest']+ cal_array ['w_lowest'] )
+"""
+# 如果要看排序 就把這行註解取消掉
 cal_array = cal_array.sort(['index2'], ascending=[False])
-pd.set_option('display.precision',20)
+"""
+#pd.set_option('display.precision',20)
 #print (merge_array[:10]) #可以試著寫成這個，從前面數十個
 print (cal_array[:10]) 
 
 #ok, 測試成功, 以後把a 改成 d0_array
-"""     
-pre_array = pd.read_csv(file_path + string['d0'], encoding = 'utf-8')
-#d0_array = pre_array.reindex(columns = csv_columns)
-#
-#d0_array = pd.DataFrame(pre_array, index = range(4000), columns = csv_columns)
-pre_array.columns = csv_columns #把col 轉成英文
-print (pre_array.columns) #到這裡成功了，接下來是把他拿進新的array
-#print (pre_array.head(5)) #我只要code，名，始，高，安，終
-#print (d0_array.index)
-pre_array['volumn'] = pre_array['volumn'].astype(int) #先把vol換成int
-pre_array = pre_array[pre_array.volumn != 0] #然後在array裡面去掉vol = 0
-#pre_array.index = pre_array['code'] #把index設定成code之後才好合併
-d0_array = pre_array
-d0_array = d0_array.drop(['industry', 'volumn', 'daily_money'], axis = 1) 
-#把不需要的資訊砍了，可是不知道為什麼 axis = 0 是不行的
-d0_array = d0_array.rename(columns = {'start' : 'd0_start', 'high' : 'd0_high', 'low': 'd0_low', 'end' : 'd0_end'})
-#把始高安終前面加上日期引數 d0 為最靠近的一天
-#print (d0_array.head(3))
-del pre_array
-#print (pre_array)
-#date_d0 = history_list[d0]  #這是為了給後面的csv檔有日期
-#date_d1 = history_list[d1]
-#print (date_d0)
-#print (date_d1)
-"""
-
-"""
-以下是測試d1_array,在合併前先把兩個做出來
-"""
-
-"""
-pre_array = pd.read_csv(file_path + string['d1'], encoding = 'utf-8')
-#d0_array = pre_array.reindex(columns = csv_columns)
-#
-#d0_array = pd.DataFrame(pre_array, index = range(4000), columns = csv_columns)
-pre_array.columns = csv_columns #把col 轉成英文
-print (pre_array.columns) #到這裡成功了，接下來是把他拿進新的array
-#print (pre_array.head(5)) #我只要code，名，始，高，安，終
-#print (d0_array.index)
-pre_array['volumn'] = pre_array['volumn'].astype(int) #先把vol換成int
-pre_array = pre_array[pre_array.volumn != 0] #然後在array裡面去掉vol = 0
-#pre_array.index = pre_array['code'] #把index設定成code之後才好合併
-d1_array = pre_array
-d1_array = d1_array.drop(['industry', 'volumn', 'daily_money'], axis = 1) #把不需要的資訊砍了，可是不知道為什麼 axis = 0 是不行的
-#d0_array = d0_array.reindex(columns = ['code', 'name','d0_start','d0_high','d0_low','d0_end'])
-#d1_array = d1_array.rename(columns = {'start' : 'd1_start', 'high' : 'd1_high', 'low': 'd1_low', 'end' : 'd1_end'})
-#print (d1_array.head(3))
-del pre_array
-result = pd.merge (d0_array, d1_array, on = ['code' , 'name', 'market'])
-print (result.head(10))
-"""
