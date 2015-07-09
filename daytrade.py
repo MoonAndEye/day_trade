@@ -9,6 +9,7 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 from collections import OrderedDict
+import csv
 
 file_path = 'C:/1save/jpStock/rawPython/' #檔案路徑的代號，這邊放歷史資料
 history_list = []
@@ -86,7 +87,7 @@ def makeDailyPriceArray(file_path, date):
     pre_array = pre_array.drop(['industry', 'volumn', 'daily_money'], axis = 1) 
     pre_array = pre_array.rename(columns = {'start' : 'd' + str(date) + '_start','high' : 'd' + str(date) +  '_high', 'low': 'd' + str(date) +  '_low', 'end' : 'd' + str(date) +  '_end'})
        
-    array_index = sort_index + '_array'
+    #array_index = sort_index + '_array'
     #print (array_index)
     return pre_array
     #print (array_name)
@@ -142,3 +143,8 @@ cal_array = cal_array.sort(['index2'], ascending=[False])
 print (cal_array[:10]) 
 
 #ok, 測試成功, 以後把a 改成 d0_array
+
+#header = cal_array.columns
+#write_in = cal_array.to_csv(encoding = 'utf-8')
+#print (header)
+cal_array.to_csv(string['d0'], encoding = 'utf-8')
