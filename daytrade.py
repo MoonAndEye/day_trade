@@ -76,9 +76,13 @@ def makeDailyPriceArray(file_path, date):
     pre_array =pd.read_csv(file_path + string[sort_index], encoding = 'utf-8')
     pre_array.columns = csv_columns    
     pre_array['volumn'] = pre_array['volumn'].astype(int) #先把vol換成int
+       
     pre_array = pre_array[pre_array.volumn != 0] #然後在array裡面去掉vol = 0
     #pre_array.index = pre_array['code'] #把index設定成code之後才好合併
-
+    pre_array['start'] = pre_array['start'].astype(float)
+    pre_array['high'] = pre_array['high'].astype(float)
+    pre_array['low'] = pre_array['low'].astype(float)
+    pre_array['end'] = pre_array['end'].astype(float)
     pre_array = pre_array.drop(['industry', 'volumn', 'daily_money'], axis = 1) 
     pre_array = pre_array.rename(columns = {'start' : 'd' + str(date) + '_start','high' : 'd' + str(date) +  '_high', 'low': 'd' + str(date) +  '_low', 'end' : 'd' + str(date) +  '_end'})
        
@@ -99,6 +103,10 @@ merge_array = pd.merge (d0_array, d1_array, on = ['code' , 'name', 'market'])
 merge_array = pd.merge (merge_array, d2_array, on = ['code' , 'name', 'market'])
 merge_array = pd.merge (merge_array, d3_array, on = ['code' , 'name', 'market'])
 merge_array = pd.merge (merge_array, d4_array, on = ['code' , 'name', 'market'])
+
+#cal_array = merge_array['code', 'market', 'name']
+merge_array ['w_highest'] = merge_array[['d0_high','d1_high', 'd2_high', 'd3_high', 'd4_high',]].max(axis = 1)
+merge_array ['w_lowest'] = merge_array[['d0_low','d1_low', 'd2_low', 'd3_low', 'd4_low',]].min(axis = 1)
 
 print (merge_array.head(10))
 
