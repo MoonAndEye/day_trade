@@ -9,8 +9,9 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 from collections import OrderedDict
-import csv
+import time
 
+start_time = time.time()
 file_path = 'C:/1save/jpStock/rawPython/' #檔案路徑的代號，這邊放歷史資料
 history_list = []
 for name in os.listdir(file_path):
@@ -106,9 +107,9 @@ merge_array = pd.merge (merge_array, d3_array, on = ['code' , 'name', 'market'])
 merge_array = pd.merge (merge_array, d4_array, on = ['code' , 'name', 'market'])
 
 #cal_array = merge_array['code', 'market', 'name']
-cal_array = merge_array [['code', 'market', 'name']]
-cal_array ['w_highest'] = merge_array[['d0_high','d1_high', 'd2_high', 'd3_high', 'd4_high',]].max(axis = 1)
-cal_array ['w_lowest'] = merge_array[['d0_low','d1_low', 'd2_low', 'd3_low', 'd4_low',]].min(axis = 1)
+#cal_array = merge_array [['code', 'market', 'name']]
+merge_array ['w_highest'] = merge_array[['d0_high','d1_high', 'd2_high', 'd3_high', 'd4_high',]].max(axis = 1)
+merge_array ['w_lowest'] = merge_array[['d0_low','d1_low', 'd2_low', 'd3_low', 'd4_low',]].min(axis = 1)
 
 merge_array ['d0_range'] = merge_array['d0_high'] - merge_array['d0_end']
 merge_array ['d1_range'] = merge_array['d1_high'] - merge_array['d1_end']
@@ -122,25 +123,31 @@ merge_array ['d2_indicate'] = merge_array['d2_high'] + merge_array['d2_end']
 merge_array ['d3_indicate'] = merge_array['d3_high'] + merge_array['d3_end']
 merge_array ['d4_indicate'] = merge_array['d4_high'] + merge_array['d4_end']
 
-cal_array ['d_widest'] = merge_array[['d0_range','d1_range', 'd2_range', 'd3_range', 'd4_range',]].max(axis = 1)
-cal_array ['d_indicate'] = merge_array[['d0_indicate','d1_indicate', 'd2_indicate', 'd3_indicate', 'd4_indicate',]].max(axis = 1)
+merge_array ['d_widest'] = merge_array[['d0_range','d1_range', 'd2_range', 'd3_range', 'd4_range',]].max(axis = 1)
+merge_array ['d_indicate'] = merge_array[['d0_indicate','d1_indicate', 'd2_indicate', 'd3_indicate', 'd4_indicate',]].max(axis = 1)
 
-cal_array ['average'] = merge_array[['d0_end','d1_end', 'd2_end', 'd3_end', 'd4_end',]].mean(axis = 1)
-
-
-cal_array ['index1'] = cal_array ['d_widest'] / cal_array ['average']
-cal_array ['index2'] = cal_array ['d_widest'] / cal_array ['d_indicate']
+merge_array ['average'] = merge_array[['d0_end','d1_end', 'd2_end', 'd3_end', 'd4_end',]].mean(axis = 1)
 
 
-cal_array ['index3'] = (cal_array ['w_highest'] - cal_array ['w_lowest'] ) / cal_array ['average']
-cal_array ['index4'] = (cal_array ['w_highest'] - cal_array ['w_lowest'] ) / (cal_array ['w_highest']+ cal_array ['w_lowest'] )
+merge_array ['index1'] = merge_array ['d_widest'] / merge_array ['average']
+merge_array ['index2'] = merge_array ['d_widest'] / merge_array ['d_indicate']
+
+
+merge_array ['index3'] = (merge_array ['w_highest'] - merge_array ['w_lowest'] ) / merge_array ['average']
+merge_array ['index4'] = (merge_array ['w_highest'] - merge_array ['w_lowest'] ) / (merge_array ['w_highest']+ merge_array ['w_lowest'] )
 """
 # 如果要看排序 就把這行註解取消掉
 cal_array = cal_array.sort(['index2'], ascending=[False])
 """
 #pd.set_option('display.precision',20)
 #print (merge_array[:10]) #可以試著寫成這個，從前面數十個
-print (cal_array[:10]) 
+#print (cal_array[:10]) 
+
+want_printout =['code','market']
+#以後要改就改 want_printout
+cal_array = merge_array.loc[:,want_printout]
+
+print (cal_array[:10])
 
 #ok, 測試成功, 以後把a 改成 d0_array
 
@@ -148,3 +155,5 @@ print (cal_array[:10])
 #write_in = cal_array.to_csv(encoding = 'utf-8')
 #print (header)
 cal_array.to_csv(string['d0'], encoding = 'utf-8')
+
+print("Run time --- %s seconds ---" % (time.time() - start_time))
