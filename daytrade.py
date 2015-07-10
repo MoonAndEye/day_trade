@@ -143,7 +143,7 @@ cal_array = cal_array.sort(['index2'], ascending=[False])
 #print (merge_array[:10]) #可以試著寫成這個，從前面數十個
 #print (cal_array[:10]) 
 
-want_printout =['code','market']
+want_printout =['code', 'name','market', 'w_highest', 'w_lowest', 'average', 'index1', 'index2', 'index3', 'index4' ]
 #以後要改就改 want_printout
 cal_array = merge_array.loc[:,want_printout]
 
