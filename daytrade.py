@@ -149,6 +149,10 @@ cal_array = merge_array.loc[:,want_printout]
 
 print (cal_array[:10])
 
+only1_array = cal_array[cal_array['market'].str.contains("1")]
+
+print (only1_array[:10])
+
 #ok, 測試成功, 以後把a 改成 d0_array
 
 #header = cal_array.columns
