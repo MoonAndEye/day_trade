@@ -158,6 +158,6 @@ print (only1_array[:10])
 #header = cal_array.columns
 #write_in = cal_array.to_csv(encoding = 'utf-8')
 #print (header)
-cal_array.to_csv(string['d0'], encoding = 'utf-8')
+cal_array.to_csv('C:/1save/jpStock/dayTrade/' + string['d0'], encoding = 'utf-8')
 
 print("Run time --- %s seconds ---" % (time.time() - start_time))
