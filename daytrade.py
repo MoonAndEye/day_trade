@@ -11,6 +11,8 @@ import matplotlib.pyplot as plt
 from collections import OrderedDict
 import time
 
+#之後要用diction加上迴圈
+
 start_time = time.time()
 file_path = 'C:/1save/jpStock/rawPython/' #檔案路徑的代號，這邊放歷史資料
 history_list = []
