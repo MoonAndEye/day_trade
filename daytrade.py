@@ -14,6 +14,13 @@ import time
 #之後要用diction加上迴圈
 
 start_time = time.time()
+
+date_array = {}
+merge_base = ['code' , 'name', 'market']#這個放要合併基準
+# date_array[0] 就是最靠新資料的DataFrame
+# 如果要改計算天數，就改下面這個range的數字, 22是月
+date = 5 #在這邊設定天數
+
 file_path = 'C:/1save/jpStock/rawPython/' #檔案路徑的代號，這邊放歷史資料
 history_list = []
 for name in os.listdir(file_path):
@@ -96,11 +103,7 @@ def makeDailyPriceArray(file_path, date):
     #print (array_name)
 
 
-date_array = {}
-merge_base = ['code' , 'name', 'market']#這個放要合併基準
-# date_array[0] 就是最靠新資料的DataFrame
-# 如果要改計算天數，就改下面這個range的數字, 22是月
-for i in range (5):
+for i in range (date):
     date_array[i] = makeDailyPriceArray(file_path, i) 
     #這個i不能把他當成string
     if i == 0:
@@ -115,17 +118,10 @@ for i in range (5):
 merge_array ['w_highest'] = merge_array[['d0_high','d1_high', 'd2_high', 'd3_high', 'd4_high',]].max(axis = 1)
 merge_array ['w_lowest'] = merge_array[['d0_low','d1_low', 'd2_low', 'd3_low', 'd4_low',]].min(axis = 1)
 
-merge_array ['d0_range'] = merge_array['d0_high'] - merge_array['d0_end']
-merge_array ['d1_range'] = merge_array['d1_high'] - merge_array['d1_end']
-merge_array ['d2_range'] = merge_array['d2_high'] - merge_array['d2_end']
-merge_array ['d3_range'] = merge_array['d3_high'] - merge_array['d3_end']
-merge_array ['d4_range'] = merge_array['d4_high'] - merge_array['d4_end']
 
-merge_array ['d0_indicate'] = merge_array['d0_high'] + merge_array['d0_end']
-merge_array ['d1_indicate'] = merge_array['d1_high'] + merge_array['d1_end']
-merge_array ['d2_indicate'] = merge_array['d2_high'] + merge_array['d2_end']
-merge_array ['d3_indicate'] = merge_array['d3_high'] + merge_array['d3_end']
-merge_array ['d4_indicate'] = merge_array['d4_high'] + merge_array['d4_end']
+for i in range(date):
+    merge_array ['d' + str(i) + '_range'] = merge_array['d' + str(i) + '_high'] - merge_array['d' + str(i) + '_end']
+    merge_array ['d' + str(i) + '_indicate'] = merge_array['d' + str(i) + '_high'] + merge_array['d' + str(i) + '_end']
 
 merge_array ['d_widest'] = merge_array[['d0_range','d1_range', 'd2_range', 'd3_range', 'd4_range',]].max(axis = 1)
 merge_array ['d_indicate'] = merge_array[['d0_indicate','d1_indicate', 'd2_indicate', 'd3_indicate', 'd4_indicate',]].max(axis = 1)
@@ -166,4 +162,3 @@ print (cal_array[:10])
 cal_array.to_csv('C:/1save/jpStock/dayTrade/' + string['d0'], encoding = 'utf-8')
 
 print("Run time --- %s seconds ---" % (time.time() - start_time))
-
