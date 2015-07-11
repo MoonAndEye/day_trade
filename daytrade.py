@@ -97,16 +97,18 @@ def makeDailyPriceArray(file_path, date):
 
 
 date_array = {}
+merge_base = ['code' , 'name', 'market']#這個放要合併基準
 # date_array[0] 就是最靠新資料的DataFrame
 # 如果要改計算天數，就改下面這個range的數字, 22是月
 for i in range (5):
     date_array[i] = makeDailyPriceArray(file_path, i) 
     #這個i不能把他當成string
-
-merge_array = pd.merge (date_array[0], date_array[1], on = ['code' , 'name', 'market'])
-merge_array = pd.merge (merge_array, date_array[2], on = ['code' , 'name', 'market'])
-merge_array = pd.merge (merge_array, date_array[3], on = ['code' , 'name', 'market'])
-merge_array = pd.merge (merge_array, date_array[4], on = ['code' , 'name', 'market'])
+    if i == 0:
+        pass
+    elif i == 1:
+        merge_array = pd.merge (date_array[0], date_array[1], on = merge_base)
+    else :
+        merge_array = pd.merge (merge_array, date_array[i], on = merge_base)
 
 #cal_array = merge_array['code', 'market', 'name']
 #cal_array = merge_array [['code', 'market', 'name']]
@@ -143,7 +145,7 @@ cal_array = cal_array.sort(['index2'], ascending=[False])
 """
 #pd.set_option('display.precision',20)
 #print (merge_array[:10]) #可以試著寫成這個，從前面數十個
-print (cal_array[:10]) 
+
 
 want_printout =['code', 'name','market', 'w_highest', 'w_lowest', 'average', 'index1', 'index2', 'index3', 'index4' ]
 #以後要改就改 want_printout
@@ -152,6 +154,7 @@ cal_array = merge_array.loc[:,want_printout]
 #print (cal_array[:10])
 
 only1_array = cal_array[cal_array['market'].str.contains("1")]
+print (cal_array[:10]) 
 
 #print (only1_array[:10])
 
