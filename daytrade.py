@@ -149,11 +149,11 @@ want_printout =['code', 'name','market', 'w_highest', 'w_lowest', 'average', 'in
 #以後要改就改 want_printout
 cal_array = merge_array.loc[:,want_printout]
 
-print (cal_array[:10])
+#print (cal_array[:10])
 
 only1_array = cal_array[cal_array['market'].str.contains("1")]
 
-print (only1_array[:10])
+#print (only1_array[:10])
 
 #ok, 測試成功, 以後把a 改成 d0_array
 
@@ -163,3 +163,15 @@ print (only1_array[:10])
 cal_array.to_csv('C:/1save/jpStock/dayTrade/' + string['d0'], encoding = 'utf-8')
 
 print("Run time --- %s seconds ---" % (time.time() - start_time))
+
+"""
+以下是要測試的東西
+
+"""
+
+# 等我念完 toeic 再把前面的改寫
+try_diction = {}
+
+for i in range (2):
+    try_diction[str(i)] = makeDailyPriceArray(file_path, i) 
+    print (try_diction[str(i)][:5])
