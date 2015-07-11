@@ -96,17 +96,17 @@ def makeDailyPriceArray(file_path, date):
     #print (array_name)
 
 
+date_array = {}
+# date_array[0] 就是最靠新資料的DataFrame
+# 如果要改計算天數，就改下面這個range的數字, 22是月
+for i in range (5):
+    date_array[i] = makeDailyPriceArray(file_path, i) 
+    #這個i不能把他當成string
 
-d0_array = makeDailyPriceArray(file_path, 0) 
-d1_array = makeDailyPriceArray(file_path, 1)
-d2_array = makeDailyPriceArray(file_path, 2)
-d3_array = makeDailyPriceArray(file_path, 3)
-d4_array = makeDailyPriceArray(file_path, 4)
-
-merge_array = pd.merge (d0_array, d1_array, on = ['code' , 'name', 'market'])
-merge_array = pd.merge (merge_array, d2_array, on = ['code' , 'name', 'market'])
-merge_array = pd.merge (merge_array, d3_array, on = ['code' , 'name', 'market'])
-merge_array = pd.merge (merge_array, d4_array, on = ['code' , 'name', 'market'])
+merge_array = pd.merge (date_array[0], date_array[1], on = ['code' , 'name', 'market'])
+merge_array = pd.merge (merge_array, date_array[2], on = ['code' , 'name', 'market'])
+merge_array = pd.merge (merge_array, date_array[3], on = ['code' , 'name', 'market'])
+merge_array = pd.merge (merge_array, date_array[4], on = ['code' , 'name', 'market'])
 
 #cal_array = merge_array['code', 'market', 'name']
 #cal_array = merge_array [['code', 'market', 'name']]
@@ -143,7 +143,7 @@ cal_array = cal_array.sort(['index2'], ascending=[False])
 """
 #pd.set_option('display.precision',20)
 #print (merge_array[:10]) #可以試著寫成這個，從前面數十個
-#print (cal_array[:10]) 
+print (cal_array[:10]) 
 
 want_printout =['code', 'name','market', 'w_highest', 'w_lowest', 'average', 'index1', 'index2', 'index3', 'index4' ]
 #以後要改就改 want_printout
@@ -155,7 +155,7 @@ only1_array = cal_array[cal_array['market'].str.contains("1")]
 
 #print (only1_array[:10])
 
-#ok, 測試成功, 以後把a 改成 d0_array
+#ok, 測試成功, 以後把a 改成 date_array[0]
 
 #header = cal_array.columns
 #write_in = cal_array.to_csv(encoding = 'utf-8')
@@ -164,14 +164,3 @@ cal_array.to_csv('C:/1save/jpStock/dayTrade/' + string['d0'], encoding = 'utf-8'
 
 print("Run time --- %s seconds ---" % (time.time() - start_time))
 
-"""
-以下是要測試的東西
-
-"""
-
-# 等我念完 toeic 再把前面的改寫
-try_diction = {}
-
-for i in range (2):
-    try_diction[str(i)] = makeDailyPriceArray(file_path, i) 
-    print (try_diction[str(i)][:5])
