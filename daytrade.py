@@ -118,15 +118,20 @@ for i in range (date):
 merge_array ['w_highest'] = merge_array[['d0_high','d1_high', 'd2_high', 'd3_high', 'd4_high',]].max(axis = 1)
 merge_array ['w_lowest'] = merge_array[['d0_low','d1_low', 'd2_low', 'd3_low', 'd4_low',]].min(axis = 1)
 
+merge_array ['average'] = merge_array[['d0_end','d1_end', 'd2_end', 'd3_end', 'd4_end',]].mean(axis = 1)
+
 
 for i in range(date):
+    stop_index = date -1
     merge_array ['d' + str(i) + '_range'] = merge_array['d' + str(i) + '_high'] - merge_array['d' + str(i) + '_end']
     merge_array ['d' + str(i) + '_indicate'] = merge_array['d' + str(i) + '_high'] + merge_array['d' + str(i) + '_end']
-
+    if i != stop_index:
+        next_date = i + 1
+        merge_array ['d' + str(i) + '_slope'] = (merge_array['d' + str(i) + '_end'] - merge_array['d' + str(next_date) + '_end']) / merge_array ['average']
+    # slope (d0-d1) / average 若為正, 則可視為上漲  
 merge_array ['d_widest'] = merge_array[['d0_range','d1_range', 'd2_range', 'd3_range', 'd4_range',]].max(axis = 1)
 merge_array ['d_indicate'] = merge_array[['d0_indicate','d1_indicate', 'd2_indicate', 'd3_indicate', 'd4_indicate',]].max(axis = 1)
 
-merge_array ['average'] = merge_array[['d0_end','d1_end', 'd2_end', 'd3_end', 'd4_end',]].mean(axis = 1)
 
 
 merge_array ['index1'] = merge_array ['d_widest'] / merge_array ['average']
@@ -144,10 +149,19 @@ cal_array = cal_array.sort(['index2'], ascending=[False])
 
 
 want_printout =['code', 'name','market', 'w_highest', 'w_lowest', 'average', 'index1', 'index2', 'index3', 'index4' ]
+want1_printout =['code', 'name','market', 'd0_start', 'd0_high', 'd0_low', 'd0_end', 'index1', 'index2', 'index3', 'index4' ]
+
 #以後要改就改 want_printout
-cal_array = merge_array.loc[:,want_printout]
+
+
+cal_array = merge_array [merge_array.d0_slope > 0]
+cal_array = cal_array [merge_array.d1_slope >0]
+cal_array = cal_array [merge_array.d2_slope >0]
+cal_array = cal_array [merge_array.d3_slope >0]
+#cal_array = merge_array.loc[:,want_printout] #先暫時改這個
 
 #print (cal_array[:10])
+cal_array = cal_array.loc[:, want1_printout]
 
 only1_array = cal_array[cal_array['market'].str.contains("1")]
 print (cal_array[:10]) 
